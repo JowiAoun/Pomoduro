@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Divider, Group } from "@mantine/core";
+import { Button, Group } from "@mantine/core";
 import {
   IconCircleCheckFilled,
   IconGraph,
@@ -24,8 +24,6 @@ const Header: React.FC<HeaderProps> = () => {
           <IconLogin2></IconLogin2> Login
         </Button>
       </Group>
-
-      <Divider></Divider>
     </>
   );
 };

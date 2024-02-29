@@ -48,7 +48,7 @@ function getUserData() {
         numToComplete: 2,
       },
       {
-        title: "Physics - Dynamics homework",
+        title: "Home - Go annoy Maria",
         numCompleted: 3,
         numToComplete: 5,
       },

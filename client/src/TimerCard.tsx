@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Timer from "./Timer.tsx";
-import { Button, Group, Stack } from "@mantine/core";
+import { Button, Group, Progress, Stack } from "@mantine/core";
 
 interface TimerCardProps {
   timerPomodoro: number;
@@ -25,6 +25,7 @@ const TimerCard: React.FC<TimerCardProps> = ({
 }) => {
   const [start, setStart] = useState(autoStartPomodoros);
   const [timerType, setTimerType] = useState(TimerType.Pomodoro);
+  const [progress, setProgress] = useState(100);
   const [forceRender, setForceRender] = useState(false); // State to force re-render
 
   const timerCallback = (time: number) => {
@@ -53,7 +54,8 @@ const TimerCard: React.FC<TimerCardProps> = ({
   };
 
   return (
-    <Stack h={300} w={500} bg={"gray"} align={"center"}>
+    <Stack>
+      <Progress value={progress} color="red" />
       <Group>
         <Button onClick={() => handleTimerTypeChange(TimerType.Pomodoro)}>
           Pomodoro
@@ -71,6 +73,7 @@ const TimerCard: React.FC<TimerCardProps> = ({
         initialTime={getInitialTimer()}
         start={start}
         setStart={setStart}
+        setProgress={setProgress}
         callback={timerCallback}
       ></Timer>
 
