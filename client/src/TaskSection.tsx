@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Divider, Group, Stack, Text } from "@mantine/core";
 import { IconCirclePlus } from "@tabler/icons-react";
 import TaskMenu from "./TaskMenu";
@@ -19,6 +19,8 @@ const TaskSection: React.FC<TasksProps> = ({
   timerLongBreak,
   longBreakInterval,
 }) => {
+  const [selectedTask, setSelectedTask] = useState(0);
+
   function getNumCompleted() {
     let n = 0;
     for (let i = 0; i < tasks.length; i++) n += tasks[i].numCompleted;
@@ -71,15 +73,17 @@ const TaskSection: React.FC<TasksProps> = ({
     date.setHours(date.getHours() + hours);
     date.setMinutes(date.getHours() + mins);
 
-    return date.getHours() + ":" + date.getMinutes();
+    return (
+      date.getHours() + ":" + date.getMinutes().toString().padStart(2, "0")
+    );
   }
 
   return (
     <Stack>
       <Text>
-        #{1}
+        #{1} {/*TODO: make 1 not static*/}
         <br></br>
-        {"abcd"}
+        {tasks[selectedTask].title}
       </Text>
 
       <Group>
@@ -94,14 +98,16 @@ const TaskSection: React.FC<TasksProps> = ({
           title={task.title}
           numCompleted={task.numCompleted}
           numToComplete={task.numToComplete}
+          setSelectedTask={setSelectedTask}
           key={index}
+          index={index}
         />
       ))}
 
       <Button>
         <IconCirclePlus></IconCirclePlus>Add Task
       </Button>
-      {/*TODO: complete finish time and use current time to get finish at*/}
+
       <Text>
         Pomos: {getNumCompleted()} / {getNumToComplete()} Finish At:{" "}
         {getFinishTimeStr()} ({getRemainingTimeStr()})

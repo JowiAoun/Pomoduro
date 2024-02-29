@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Button, Group, NumberInput, Stack, Text } from "@mantine/core";
+import {
+  Button,
+  Group,
+  NavLink,
+  NumberInput,
+  Stack,
+  Text,
+} from "@mantine/core";
 import {
   IconCircleCheckFilled,
   IconDotsVertical,
@@ -12,12 +19,16 @@ interface TaskProps {
   title: string;
   numCompleted: number;
   numToComplete: number;
+  setSelectedTask: (index: number) => void;
+  index: number;
 }
 
 const Task: React.FC<TaskProps> = ({
-  title: title,
+  title,
   numCompleted,
   numToComplete,
+  setSelectedTask,
+  index,
 }) => {
   const [edit, setEdit] = useState(false);
 
@@ -54,19 +65,27 @@ const Task: React.FC<TaskProps> = ({
       </Group>
     </Stack>
   ) : (
-    <div style={{ background: "gray" }}>
-      {/* TODO: Turn back into button */}
-      <Group>
-        <IconCircleCheckFilled></IconCircleCheckFilled>
-        <Text size={"md"}>{title}</Text>
-        <Text>
-          {numCompleted}/{numToComplete}
-        </Text>
-        <Button onClick={() => setEdit(true)}>
-          <IconDotsVertical></IconDotsVertical>
-        </Button>
-      </Group>
-    </div>
+    <NavLink
+      onClick={() => setSelectedTask(index)}
+      label={
+        <div>
+          <Group>
+            <Text size={"md"}>{title}</Text>
+          </Group>
+        </div>
+      }
+      leftSection={<IconCircleCheckFilled></IconCircleCheckFilled>}
+      rightSection={
+        <>
+          <Text>
+            {numCompleted}/{numToComplete}
+          </Text>
+          <Button onClick={() => setEdit(true)}>
+            <IconDotsVertical></IconDotsVertical>
+          </Button>
+        </>
+      }
+    />
   );
 };
 

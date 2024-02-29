@@ -1,8 +1,8 @@
-import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
-import TaskSection from "./TaskSection.tsx";
-import TimerCard from "./TimerCard.tsx";
+import "@mantine/core/styles.css";
 import Header from "./Header.tsx";
+import TimerCard from "./TimerCard.tsx";
+import TaskSection from "./TaskSection.tsx";
 
 function App() {
   const userData = getUserData();
@@ -30,7 +30,7 @@ function App() {
 
 function getUserData() {
   return {
-    timerPomodoro: 1,
+    timerPomodoro: 25,
     timerShortBreak: 5,
     timerLongBreak: 15,
     autoStartBreaks: false,
