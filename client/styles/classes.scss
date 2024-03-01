@@ -1,0 +1,127 @@
+$primary-color: #ba4949;
+$secondary-color: #ffffff;
+$font-color: #000000;
+
+.mantine-AppShell-root {
+  background-color: $primary-color;
+}
+
+.mantine-Button-root {
+  &[data-variant='timer-control'] {
+    color: $primary-color;
+    background-color: $secondary-color;
+    border: none;
+    border-radius: 5px;
+  }
+
+  &[data-variant='timer-type'] {
+    color: $secondary-color;
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+  }
+
+  &[data-variant='header'] {
+    color: $secondary-color;
+    background-color: rgba(255, 255, 255, 0.2);
+    opacity: 0.9;
+    border: none;
+    border-radius: 5px;
+  }
+
+  &[data-variant='task'] {
+    color: gray;
+    background-color: $secondary-color;
+    width: 2rem;
+    height: 2rem;
+    padding: 0 0;
+    opacity: 0.9;
+    border-radius: 5px;
+    outline-width: 2px;
+    outline-color: black;
+  }
+
+  &[data-variant='task-menu-select'] {
+    color: $secondary-color;
+    background-color: rgba(255, 255, 255, 0.2);
+    width: 2rem;
+    height: 2rem;
+    padding: 0 0;
+    opacity: 0.9;
+    border-radius: 5px;
+  }
+
+  &[data-variant='add-task'] {
+    color: $secondary-color;
+    background-color: rgba(0, 0, 0, 0.1);
+    height: 4rem;
+    opacity: 0.9;
+    border-radius: 5px;
+    padding: 0 0;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+  }
+}
+
+.mantine-NavLink-root {
+  &[data-variant='task-menu-select'] {
+    background-color: $secondary-color;
+    opacity: 0.9;
+    border: none;
+    border-radius: 5px;
+    padding: 1rem 1rem;
+  }
+}
+
+.mantine-Container-root {
+  &[data-variant='timer'] {
+    color: $secondary-color;
+    background-color: rgba(255, 255, 255, 0.1);
+    opacity: 0.9;
+    border-radius: 5px;
+  }
+
+  &[data-variant='tasks-remaining'] {
+    color: $secondary-color;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    padding: 1.5rem;
+    opacity: 0.9;
+    width: 100%;
+    border-radius: 5px;
+    margin-top: 0;
+  }
+}
+
+.mantine-Progress-root {
+  &[data-variant='main'] {
+    color: $secondary-color;
+    background-color: rgba(0, 0, 0, 0.05);
+    width: 36rem;
+    border-radius: 5px;
+  }
+
+  .mantine-Progress-section {
+    background-color: $secondary-color;
+    border-radius: 5px;
+  }
+}
+
+.mantine-Text-root {
+  &[data-variant='bold'] {
+    font-weight: bold;
+  }
+
+  &[data-variant='task'] {
+    color: $font-color;
+    font-weight: bold;
+  }
+
+  &[data-variant='task-amount'] {
+    color: gray;
+    font-weight: bold;
+  }
+
+  color: $secondary-color
+}
