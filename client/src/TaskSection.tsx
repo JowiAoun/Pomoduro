@@ -93,36 +93,42 @@ const TaskSection: React.FC<TasksProps> = ({
           <Text>#{1}</Text> {/*TODO: make 1 not static*/}
         </Center>
         <Center>
-          <Text>{tasks[selectedTask].title}</Text>
+          <Text variant="bold">{tasks[selectedTask].title}</Text>
         </Center>
       </Container>
 
       <Group justify="space-between">
-        <Text>Tasks</Text>
+        <Text variant="bold">Tasks</Text>
         <TaskMenu></TaskMenu>
       </Group>
 
-      <Divider></Divider>
+      <Divider size={2} opacity={0.9}></Divider>
+      <Stack gap="xs">
+        {tasks.map((task, index) => (
+          <Task
+            title={task.title}
+            numCompleted={task.numCompleted}
+            numToComplete={task.numToComplete}
+            setSelectedTask={setSelectedTask}
+            key={index}
+            index={index}
+          />
+        ))}
+      </Stack>
 
-      {tasks.map((task, index) => (
-        <Task
-          title={task.title}
-          numCompleted={task.numCompleted}
-          numToComplete={task.numToComplete}
-          setSelectedTask={setSelectedTask}
-          key={index}
-          index={index}
-        />
-      ))}
-
-      <Button>
+      <Button variant="add-task">
         <IconCirclePlus></IconCirclePlus>Add Task
       </Button>
 
-      <Text>
-        Pomos: {getNumCompleted()} / {getNumToComplete()} Finish At:{" "}
-        {getFinishTimeStr()} ({getRemainingTimeStr()})
-      </Text>
+      <Container w="100%" px="0" py="0" mb="3rem">
+        <Divider />
+        <Container variant="tasks-remaining">
+          <Text>
+            Pomos: {getNumCompleted()} / {getNumToComplete()} Finish At:{" "}
+            {getFinishTimeStr()} ({getRemainingTimeStr()})
+          </Text>
+        </Container>
+      </Container>
     </Stack>
   );
 };

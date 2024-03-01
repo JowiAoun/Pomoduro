@@ -1,10 +1,6 @@
-import {
-  AppShell,
-  Container,
-  createTheme,
-  MantineProvider,
-} from "@mantine/core";
+import { AppShell, Container, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
+import "../styles/classes.css";
 import Header from "./Header.tsx";
 import TimerCard from "./TimerCard.tsx";
 import TaskSection from "./TaskSection.tsx";
@@ -12,16 +8,12 @@ import TaskSection from "./TaskSection.tsx";
 function App() {
   const userData = getUserData();
 
-  const redTheme = createTheme({
-    autoContrast: false,
-  });
-
   return (
-    <MantineProvider theme={redTheme}>
-      <AppShell style={{ background: "#BA4949FF" }}>
+    <MantineProvider>
+      <AppShell>
         <Header></Header>
 
-        <Container size="xs">
+        <Container>
           <TimerCard
             timerPomodoro={userData.timerPomodoro}
             timerShortBreak={userData.timerShortBreak}

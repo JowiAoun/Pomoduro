@@ -66,21 +66,24 @@ const Task: React.FC<TaskProps> = ({
     </Stack>
   ) : (
     <NavLink
+      variant="task-menu-select"
       onClick={() => setSelectedTask(index)}
       label={
         <div>
           <Group>
-            <Text size={"md"}>{title}</Text>
+            <Text variant="task" size={"md"}>
+              {title}
+            </Text>
           </Group>
         </div>
       }
       leftSection={<IconCircleCheckFilled></IconCircleCheckFilled>}
       rightSection={
         <>
-          <Text>
+          <Text variant="task-amount">
             {numCompleted}/{numToComplete}
           </Text>
-          <Button onClick={() => setEdit(true)}>
+          <Button variant="task" onClick={() => setEdit(true)}>
             <IconDotsVertical></IconDotsVertical>
           </Button>
         </>

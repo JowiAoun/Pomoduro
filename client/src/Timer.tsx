@@ -27,6 +27,7 @@ const Timer: React.FC<TimerProps> = ({
 
     if (time <= 0) {
       setStart(false);
+      setProgress(0);
       callback(initialTime - time);
     }
   }, [start, time]);

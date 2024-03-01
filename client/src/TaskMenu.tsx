@@ -1,12 +1,12 @@
 import React from "react";
-import { Menu, Button, Text, rem } from "@mantine/core";
+import { Button, Menu, rem, Text } from "@mantine/core";
 import {
   IconArrowsLeftRight,
   IconCheck,
-  IconTrash,
-  IconLock,
   IconDotsVertical,
+  IconLock,
   IconPlus,
+  IconTrash,
 } from "@tabler/icons-react";
 
 interface TaskMenuProps {}
@@ -15,10 +15,8 @@ const TaskMenu: React.FC<TaskMenuProps> = () => {
   return (
     <Menu shadow="md" width={200}>
       <Menu.Target>
-        <Button>
-          <IconDotsVertical
-            style={{ width: rem(14), height: rem(14) }}
-          ></IconDotsVertical>
+        <Button variant="task-menu-select">
+          <IconDotsVertical></IconDotsVertical>
         </Button>
       </Menu.Target>
 
