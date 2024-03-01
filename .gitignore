@@ -24,3 +24,5 @@ server/venv
 *.njsproj
 *.sln
 *.sw?
+/client/styles/classes.css
+/client/styles/classes.css.map
