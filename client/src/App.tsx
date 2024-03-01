@@ -1,4 +1,9 @@
-import { MantineProvider } from "@mantine/core";
+import {
+  AppShell,
+  Container,
+  createTheme,
+  MantineProvider,
+} from "@mantine/core";
 import "@mantine/core/styles.css";
 import Header from "./Header.tsx";
 import TimerCard from "./TimerCard.tsx";
@@ -7,23 +12,35 @@ import TaskSection from "./TaskSection.tsx";
 function App() {
   const userData = getUserData();
 
+  const redTheme = createTheme({
+    autoContrast: false,
+  });
+
   return (
-    <MantineProvider>
-      <Header></Header>
-      <TimerCard
-        timerPomodoro={userData.timerPomodoro}
-        timerShortBreak={userData.timerShortBreak}
-        timerLongBreak={userData.timerLongBreak}
-        autoStartBreaks={userData.autoStartBreaks}
-        autoStartPomodoros={userData.autoStartPomodoros}
-      ></TimerCard>
-      <TaskSection
-        tasks={userData.tasks}
-        timerPomodoro={userData.timerPomodoro}
-        timerShortBreak={userData.timerShortBreak}
-        timerLongBreak={userData.timerLongBreak}
-        longBreakInterval={userData.longBreakInterval}
-      ></TaskSection>
+    <MantineProvider theme={redTheme}>
+      <AppShell style={{ background: "#BA4949FF" }}>
+        <Header></Header>
+
+        <Container size="xs">
+          <TimerCard
+            timerPomodoro={userData.timerPomodoro}
+            timerShortBreak={userData.timerShortBreak}
+            timerLongBreak={userData.timerLongBreak}
+            autoStartBreaks={userData.autoStartBreaks}
+            autoStartPomodoros={userData.autoStartPomodoros}
+          ></TimerCard>
+        </Container>
+
+        <Container size="xs">
+          <TaskSection
+            tasks={userData.tasks}
+            timerPomodoro={userData.timerPomodoro}
+            timerShortBreak={userData.timerShortBreak}
+            timerLongBreak={userData.timerLongBreak}
+            longBreakInterval={userData.longBreakInterval}
+          ></TaskSection>
+        </Container>
+      </AppShell>
     </MantineProvider>
   );
 }

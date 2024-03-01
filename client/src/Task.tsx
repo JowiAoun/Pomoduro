@@ -33,7 +33,7 @@ const Task: React.FC<TaskProps> = ({
   const [edit, setEdit] = useState(false);
 
   return edit ? (
-    <Stack style={{ background: "gray" }}>
+    <Stack>
       <Text size={"md"}>{title}</Text>
       <Text size={"sm"}>Act / Est Pomodoros</Text>
 

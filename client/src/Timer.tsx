@@ -32,7 +32,7 @@ const Timer: React.FC<TimerProps> = ({
   }, [start, time]);
 
   return (
-    <Text>
+    <Text size="7.5rem" fw="bold" py="1rem">
       {Math.floor(time / 60)
         .toString()
         .padStart(2, "0")}

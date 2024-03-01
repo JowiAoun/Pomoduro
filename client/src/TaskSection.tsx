@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Button, Divider, Group, Stack, Text } from "@mantine/core";
+import {
+  Button,
+  Center,
+  Container,
+  Divider,
+  Group,
+  Stack,
+  Text,
+} from "@mantine/core";
 import { IconCirclePlus } from "@tabler/icons-react";
 import TaskMenu from "./TaskMenu";
 import Task from "./Task.tsx";
@@ -80,13 +88,16 @@ const TaskSection: React.FC<TasksProps> = ({
 
   return (
     <Stack>
-      <Text>
-        #{1} {/*TODO: make 1 not static*/}
-        <br></br>
-        {tasks[selectedTask].title}
-      </Text>
+      <Container>
+        <Center>
+          <Text>#{1}</Text> {/*TODO: make 1 not static*/}
+        </Center>
+        <Center>
+          <Text>{tasks[selectedTask].title}</Text>
+        </Center>
+      </Container>
 
-      <Group>
+      <Group justify="space-between">
         <Text>Tasks</Text>
         <TaskMenu></TaskMenu>
       </Group>
