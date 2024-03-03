@@ -13,21 +13,29 @@ const Header: React.FC<HeaderProps> = () => {
   return (
     <Container size="sm" py="0.5rem">
       <Group gap="sm">
-        <Container ml="0" px="0">
-          <IconCircleCheckFilled></IconCircleCheckFilled>{" "}
-          <Text variant="bold">Pomoduro</Text>
+        <Container variant="header-logo">
+          <IconCircleCheckFilled
+            style={{ marginLeft: "0px", marginRight: "0.5rem" }}
+          ></IconCircleCheckFilled>
+          <Text variant="header-logo">Pomoduro</Text>
         </Container>
         <Button variant="header">
-          <IconGraph></IconGraph>
-          <Text>Report</Text>
+          <IconGraph
+            style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
+          ></IconGraph>
+          <Text variant="header-button">Report</Text>
         </Button>
         <Button variant="header">
-          <IconSettings></IconSettings>
-          <Text>Settings</Text>
+          <IconSettings
+            style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
+          ></IconSettings>
+          <Text variant="header-button">Settings</Text>
         </Button>
         <Button variant="header">
-          <IconLogin2></IconLogin2>
-          <Text>Login</Text>
+          <IconLogin2
+            style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
+          ></IconLogin2>
+          <Text variant="header-button">Login</Text>
         </Button>
       </Group>
     </Container>

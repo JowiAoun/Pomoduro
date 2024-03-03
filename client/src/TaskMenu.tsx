@@ -9,9 +9,21 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 
-interface TaskMenuProps {}
+interface TaskMenuProps {
+  handleClearFinishedTasks: () => void;
+  handleClearActPomodoros: () => void;
+  handleAddFromTemplate: () => void;
+  handleImportFromTodoist: () => void;
+  handleClearAllTasks: () => void;
+}
 
-const TaskMenu: React.FC<TaskMenuProps> = () => {
+const TaskMenu: React.FC<TaskMenuProps> = ({
+  handleClearFinishedTasks,
+  handleClearActPomodoros,
+  handleAddFromTemplate,
+  handleImportFromTodoist,
+  handleClearAllTasks,
+}) => {
   return (
     <Menu shadow="md" width={200}>
       <Menu.Target>
@@ -22,6 +34,7 @@ const TaskMenu: React.FC<TaskMenuProps> = () => {
 
       <Menu.Dropdown>
         <Menu.Item
+          onClick={() => handleClearFinishedTasks()}
           leftSection={
             <IconTrash style={{ width: rem(14), height: rem(14) }} />
           }
@@ -29,6 +42,7 @@ const TaskMenu: React.FC<TaskMenuProps> = () => {
           Clear finished tasks
         </Menu.Item>
         <Menu.Item
+          onClick={() => handleClearActPomodoros()}
           leftSection={
             <IconCheck style={{ width: rem(14), height: rem(14) }} />
           }
@@ -36,11 +50,13 @@ const TaskMenu: React.FC<TaskMenuProps> = () => {
           Clear act pomodoros
         </Menu.Item>
         <Menu.Item
+          onClick={() => handleAddFromTemplate()}
           leftSection={<IconPlus style={{ width: rem(14), height: rem(14) }} />}
         >
           Add from Template
         </Menu.Item>
         <Menu.Item
+          onClick={() => handleImportFromTodoist()}
           leftSection={
             <IconArrowsLeftRight style={{ width: rem(14), height: rem(14) }} />
           }
@@ -56,6 +72,7 @@ const TaskMenu: React.FC<TaskMenuProps> = () => {
         <Menu.Divider />
 
         <Menu.Item
+          onClick={() => handleClearAllTasks()}
           leftSection={
             <IconTrash style={{ width: rem(14), height: rem(14) }} />
           }

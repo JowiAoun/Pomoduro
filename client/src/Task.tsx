@@ -14,32 +14,36 @@ import {
   IconTriangleFilled,
   IconTriangleInvertedFilled,
 } from "@tabler/icons-react";
+import { TaskType } from "./types.tsx";
 
 interface TaskProps {
-  title: string;
-  numCompleted: number;
-  numToComplete: number;
-  setSelectedTask: (index: number) => void;
-  index: number;
+  task: TaskType;
+  handleSelect: (id: string) => void;
+  handleDelete: (id: string) => void;
+  variant: string;
 }
 
 const Task: React.FC<TaskProps> = ({
-  title,
-  numCompleted,
-  numToComplete,
-  setSelectedTask,
-  index,
+  task,
+  handleSelect,
+  handleDelete,
+  variant,
 }) => {
   const [edit, setEdit] = useState(false);
 
+  function deleteTask() {
+    setEdit(false);
+    handleDelete(task.id);
+  }
+
   return edit ? (
     <Stack>
-      <Text size={"md"}>{title}</Text>
+      <Text size={"md"}>{task.title}</Text>
       <Text size={"sm"}>Act / Est Pomodoros</Text>
 
       <Group>
-        <NumberInput value={numCompleted}></NumberInput>/
-        <NumberInput value={numToComplete}></NumberInput>
+        <NumberInput value={task.numCompleted}></NumberInput>/
+        <NumberInput value={task.numToComplete}></NumberInput>
         <Button>
           <IconTriangleFilled></IconTriangleFilled>
         </Button>
@@ -59,20 +63,20 @@ const Task: React.FC<TaskProps> = ({
       </Group>
 
       <Group>
-        <Button onClick={() => setEdit(false)}>Delete</Button>
+        <Button onClick={() => deleteTask()}>Delete</Button>
         <Button onClick={() => setEdit(false)}>Cancel</Button>
         <Button onClick={() => setEdit(false)}>Save</Button>
       </Group>
     </Stack>
   ) : (
     <NavLink
-      variant="task-menu-select"
-      onClick={() => setSelectedTask(index)}
+      variant={variant}
+      onClick={() => handleSelect(task.id)}
       label={
         <div>
           <Group>
             <Text variant="task" size={"md"}>
-              {title}
+              {task.title}
             </Text>
           </Group>
         </div>
@@ -81,7 +85,7 @@ const Task: React.FC<TaskProps> = ({
       rightSection={
         <>
           <Text variant="task-amount">
-            {numCompleted}/{numToComplete}
+            {task.numCompleted}/{task.numToComplete}
           </Text>
           <Button variant="task" onClick={() => setEdit(true)}>
             <IconDotsVertical></IconDotsVertical>
