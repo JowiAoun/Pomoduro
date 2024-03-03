@@ -3,6 +3,7 @@ $secondary-color: #ffffff;
 $break-short-color: #38858a;
 $break-long-color: #397097;
 $font-color: #000000;
+$border-radius: 5px;
 
 .mantine-AppShell-root {
   transition: background-color 0.8s ease;
@@ -199,6 +200,13 @@ $font-color: #000000;
   }
 }
 
+.mantine-Stack-root {
+  &[data-variant='task-edit'] {
+    background-color: $secondary-color;
+    border-radius: $border-radius;
+  }
+}
+
 .mantine-Container-root {
   &[data-variant='header-logo'] {
     color: $secondary-color;
@@ -228,8 +236,25 @@ $font-color: #000000;
     padding: 1.5rem;
     opacity: 0.9;
     width: 100%;
-    border-radius: 5px;
+    border-radius: $border-radius;
     margin-top: 0;
+  }
+
+  &[data-variant='task-edit'] {
+    background-color: $secondary-color;
+    padding: 1rem 1rem;
+    border-top-left-radius: $border-radius;
+    border-top-right-radius: $border-radius;
+  }
+
+  &[data-variant='task-edit-bottom'] {
+    color: $secondary-color;
+    background-color: rgb(239, 239, 239);
+    padding: 1rem 1rem;
+    width: 100%;
+    margin: 0 0;
+    border-bottom-left-radius: $border-radius;
+    border-bottom-right-radius: $border-radius;
   }
 }
 
