@@ -1,25 +1,14 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Group,
-  NavLink,
-  NumberInput,
-  Stack,
-  Text,
-} from "@mantine/core";
-import {
-  IconCircleCheckFilled,
-  IconDotsVertical,
-  IconLock,
-  IconTriangleFilled,
-  IconTriangleInvertedFilled,
-} from "@tabler/icons-react";
+import { Button, Group, NavLink, Text } from "@mantine/core";
+import { IconCircleCheckFilled, IconDotsVertical } from "@tabler/icons-react";
 import { TaskType } from "./types.tsx";
+import TaskEdit from "./TaskEdit.tsx";
 
 interface TaskProps {
   task: TaskType;
   handleSelect: (id: string) => void;
   handleDelete: (id: string) => void;
+  handleSave: (id: string, newTask: TaskType) => void;
   variant: string;
 }
 
@@ -27,47 +16,32 @@ const Task: React.FC<TaskProps> = ({
   task,
   handleSelect,
   handleDelete,
+  handleSave,
   variant,
 }) => {
   const [edit, setEdit] = useState(false);
 
-  function deleteTask() {
+  const deleteTask = () => {
     setEdit(false);
     handleDelete(task.id);
-  }
+  };
+
+  const cancelTask = () => {
+    setEdit(false);
+  };
+
+  const saveTask = (newTask: TaskType) => {
+    setEdit(false);
+    handleSave(task.id, newTask);
+  };
 
   return edit ? (
-    <Stack>
-      <Text size={"md"}>{task.title}</Text>
-      <Text size={"sm"}>Act / Est Pomodoros</Text>
-
-      <Group>
-        <NumberInput value={task.numCompleted}></NumberInput>/
-        <NumberInput value={task.numToComplete}></NumberInput>
-        <Button>
-          <IconTriangleFilled></IconTriangleFilled>
-        </Button>
-        <Button>
-          <IconTriangleInvertedFilled></IconTriangleInvertedFilled>
-        </Button>
-      </Group>
-
-      <Group>
-        <Button>
-          <Text>+ Add Note</Text>
-        </Button>
-        <Button>
-          <Text>+ Add Project</Text>
-          <IconLock></IconLock>
-        </Button>
-      </Group>
-
-      <Group>
-        <Button onClick={() => deleteTask()}>Delete</Button>
-        <Button onClick={() => setEdit(false)}>Cancel</Button>
-        <Button onClick={() => setEdit(false)}>Save</Button>
-      </Group>
-    </Stack>
+    <TaskEdit
+      task={task}
+      handleDelete={deleteTask}
+      handleCancel={cancelTask}
+      handleSave={saveTask}
+    ></TaskEdit>
   ) : (
     <NavLink
       variant={variant}

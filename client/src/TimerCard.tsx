@@ -25,7 +25,7 @@ const TimerCard: React.FC<TimerCardProps> = ({
   const [start, setStart] = useState(autoStartPomodoros);
   const [progress, setProgress] = useState(100);
   const [forceRender, setForceRender] = useState(false); // State to force re-render
-  const audioStart = new Audio("../public/sounds/timer-click.wav");
+  const audioStart = new Audio("/sounds/timer-click.wav");
 
   const timerCallback = (time: number) => {
     console.log("Timer completed:", time, "seconds", "(type:", timerType, ")");

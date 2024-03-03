@@ -34,60 +34,68 @@ const TaskSection: React.FC<TasksProps> = ({
   const [selectedTask, setSelectedTask] = useState(_tasks.length > 0 ? 0 : -1);
   const [tasks, setTasks] = useState(_tasks);
 
-  function handleDelete(id: string) {
+  const handleDelete = (id: string) => {
     setSelectedTask(0);
     setTasks((tasks: TaskType[]) =>
       tasks.filter((task: TaskType) => task.id !== id)
     );
-  }
+  };
 
-  function handleSelect(id: string) {
+  const handleSelect = (id: string) => {
     const index = tasks.findIndex((task: TaskType) => task.id === id);
     setSelectedTask(index);
-  }
+  };
 
-  function handleClearFinishedTasks() {
+  const handleSave = (id: string, newTask: TaskType) => {
+    if (id === "NEW") {
+      setTasks([...tasks, newTask]);
+    } else {
+      setTasks(tasks.map((task) => (task.id === id ? newTask : task)));
+    }
+  };
+
+  const handleClearFinishedTasks = () => {
     setTasks((tasks: TaskType[]) =>
       tasks.filter((task: TaskType) => task.numCompleted < task.numToComplete)
     );
     tasks.length > 0 ? setSelectedTask(0) : setSelectedTask(-1);
-  }
+  };
 
-  function handleClearActPomodoros() {
+  const handleClearActPomodoros = () => {
     setTasks((tasks: TaskType[]) =>
       tasks.map((task: TaskType) => {
         task.numCompleted = 0;
         return task;
       })
     );
-  }
+  };
 
-  function handleAddFromTemplate() {
+  const handleAddFromTemplate = () => {
     throw new Error("Function not implemented.");
-  }
+  };
 
-  function handleImportFromTodoist() {
+  const handleImportFromTodoist = () => {
     throw new Error("Function not implemented.");
-  }
+  };
 
-  function handleClearAllTasks() {
+  const handleClearAllTasks = () => {
     setSelectedTask(-1);
     setTasks([]);
-  }
+  };
 
-  function getNumCompleted() {
+  const getNumCompleted = () => {
     let n = 0;
     for (let i = 0; i < tasks.length; i++) n += tasks[i].numCompleted;
     return n;
-  }
+  };
 
-  function getNumToComplete() {
+  const getNumToComplete = () => {
     let n = 0;
     for (let i = 0; i < tasks.length; i++) n += tasks[i].numToComplete;
     return n;
-  }
+  };
 
-  function getFinishTime() {
+  const getFinishTime = () => {
     const numToComplete = getNumToComplete();
     const numCompleted = getNumCompleted();
 
@@ -100,9 +108,9 @@ const TaskSection: React.FC<TasksProps> = ({
     return (
       totalPomodoroTime - completedPomodoroTime + longBreakTime + totalBreakTime
     );
-  }
+  };
 
-  function getRemainingTimeStr() {
+  const getRemainingTimeStr = () => {
     const time = getFinishTime();
     const hours = Math.floor(time / 60);
     const mins = time % 60;
@@ -116,9 +124,9 @@ const TaskSection: React.FC<TasksProps> = ({
     } else {
       return mins + "m";
     }
-  }
+  };
 
-  function getFinishTimeStr() {
+  const getFinishTimeStr = () => {
     let date = new Date();
     const time = getFinishTime();
     const hours = Math.floor(time / 60);
@@ -130,9 +138,9 @@ const TaskSection: React.FC<TasksProps> = ({
     return (
       date.getHours() + ":" + date.getMinutes().toString().padStart(2, "0")
     );
-  }
+  };
 
-  function getActionStr() {
+  const getActionStr = () => {
     if (tasks.length > 0) {
       return tasks[selectedTask].title;
     } else if (
@@ -143,7 +151,7 @@ const TaskSection: React.FC<TasksProps> = ({
     } else {
       return "Time to focus!";
     }
-  }
+  };
 
   return (
     <Stack>
@@ -174,6 +182,7 @@ const TaskSection: React.FC<TasksProps> = ({
             task={task}
             handleSelect={handleSelect}
             handleDelete={handleDelete}
+            handleSave={handleSave}
             variant={selectedTask === index ? "task-menu-select" : "task-menu"}
             key={index}
           />
