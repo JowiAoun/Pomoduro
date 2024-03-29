@@ -11,24 +11,18 @@ import {
 import { IconCirclePlus } from "@tabler/icons-react";
 import TaskMenu from "./TaskMenu";
 import Task from "./Task.tsx";
-import { TaskType } from "./types.tsx";
+import {SettingsType, TaskType} from "./types.tsx";
 import { TimerEnum } from "./enums.tsx";
 
 interface TasksProps {
   _tasks: TaskType[];
-  timerPomodoro: number;
-  timerShortBreak: number;
-  timerLongBreak: number;
-  longBreakInterval: number;
+  settings: SettingsType;
   timerType: TimerEnum;
 }
 
 const TaskSection: React.FC<TasksProps> = ({
   _tasks,
-  timerPomodoro,
-  timerShortBreak,
-  timerLongBreak,
-  longBreakInterval,
+  settings,
   timerType,
 }) => {
   const [selectedTask, setSelectedTask] = useState(_tasks.length > 0 ? 0 : -1);
@@ -99,11 +93,11 @@ const TaskSection: React.FC<TasksProps> = ({
     const numToComplete = getNumToComplete();
     const numCompleted = getNumCompleted();
 
-    const totalPomodoroTime = numToComplete * timerPomodoro;
-    const completedPomodoroTime = numCompleted * timerPomodoro;
-    const longBreaks = Math.floor(numToComplete / longBreakInterval);
-    const longBreakTime = longBreaks * timerLongBreak;
-    const totalBreakTime = (numToComplete - 1) * timerShortBreak;
+    const totalPomodoroTime = numToComplete * settings.timerPomodoro;
+    const completedPomodoroTime = numCompleted * settings.timerPomodoro;
+    const longBreaks = Math.floor(numToComplete / settings.longBreakInterval);
+    const longBreakTime = longBreaks * settings.timerLongBreak;
+    const totalBreakTime = (numToComplete - 1) * settings.timerShortBreak;
 
     return (
       totalPomodoroTime - completedPomodoroTime + longBreakTime + totalBreakTime

@@ -2,27 +2,24 @@ import React, { useState } from "react";
 import Timer from "./Timer.tsx";
 import { Button, Container, Group, Progress, Stack } from "@mantine/core";
 import { TimerEnum } from "./enums.tsx";
+import {SettingsType} from "./types.tsx";
 
 interface TimerCardProps {
-  timerPomodoro: number;
-  timerShortBreak: number;
-  timerLongBreak: number;
-  autoStartBreaks: boolean;
-  autoStartPomodoros: boolean;
+  settings: SettingsType | null;
   timerType: TimerEnum;
   setTimerType: (val: TimerEnum) => void;
 }
 
 const TimerCard: React.FC<TimerCardProps> = ({
-  timerPomodoro,
-  timerShortBreak,
-  timerLongBreak,
-  autoStartBreaks,
-  autoStartPomodoros,
+  settings,
   timerType,
   setTimerType,
 }) => {
-  const [start, setStart] = useState(autoStartPomodoros);
+  if (settings === null) {
+    return "Loading..."
+  }
+
+  const [start, setStart] = useState(settings.autoStartPomodoros);
   const [progress, setProgress] = useState(100);
   const [forceRender, setForceRender] = useState(false); // State to force re-render
   const audioStart = new Audio("/sounds/timer-click.wav");
@@ -36,9 +33,9 @@ const TimerCard: React.FC<TimerCardProps> = ({
     setTimerType(type);
     setProgress(100);
     setStart(
-      (autoStartPomodoros && type == TimerEnum.Pomodoro) ||
-        (autoStartBreaks && type == TimerEnum.ShortBreak) ||
-        (autoStartBreaks && type == TimerEnum.LongBreak)
+      (settings.autoStartPomodoros && type == TimerEnum.Pomodoro) ||
+        (settings.autoStartBreaks && type == TimerEnum.ShortBreak) ||
+        (settings.autoStartBreaks && type == TimerEnum.LongBreak)
     );
   };
 
@@ -50,11 +47,11 @@ const TimerCard: React.FC<TimerCardProps> = ({
   const getInitialTimer = () => {
     switch (timerType) {
       case TimerEnum.ShortBreak:
-        return timerShortBreak * 60;
+        return settings.timerShortBreak * 60;
       case TimerEnum.LongBreak:
-        return timerLongBreak * 60;
+        return settings.timerLongBreak * 60;
       default:
-        return timerPomodoro * 60;
+        return settings.timerPomodoro * 60;
     }
   };
 
