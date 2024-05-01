@@ -1,5 +1,5 @@
 export type TaskType = {
-  id: string;
+  _id: string;
   userId: string;
   title: string;
   note: string;
@@ -7,15 +7,22 @@ export type TaskType = {
   done: boolean;
   numCompleted: number;
   numToComplete: number;
-  created: string
+  created: string;
 };
 
 export type SettingsType = {
-  userId: string;
-  timerPomodoro: number,
-  timerShortBreak: number,
-  timerLongBreak: number,
-  autoStartBreaks: boolean,
-  autoStartPomodoros: boolean,
-  longBreakInterval: number,
-}
+  timerPomodoro: number;
+  timerShortBreak: number;
+  timerLongBreak: number;
+  autoStartBreaks: boolean;
+  autoStartPomodoros: boolean;
+  longBreakInterval: number;
+};
+
+export type UserType = {
+  _id: string;
+  username: string;
+  email: string;
+  tasks: TaskType[];
+  settings: SettingsType;
+};

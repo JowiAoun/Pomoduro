@@ -11,7 +11,7 @@ import {
 import { IconCirclePlus } from "@tabler/icons-react";
 import TaskMenu from "./TaskMenu";
 import Task from "./Task.tsx";
-import {SettingsType, TaskType} from "./types.tsx";
+import { SettingsType, TaskType } from "./types.tsx";
 import { TimerEnum } from "./enums.tsx";
 
 interface TasksProps {
@@ -20,23 +20,19 @@ interface TasksProps {
   timerType: TimerEnum;
 }
 
-const TaskSection: React.FC<TasksProps> = ({
-  _tasks,
-  settings,
-  timerType,
-}) => {
+const TaskSection: React.FC<TasksProps> = ({ _tasks, settings, timerType }) => {
   const [selectedTask, setSelectedTask] = useState(_tasks.length > 0 ? 0 : -1);
   const [tasks, setTasks] = useState(_tasks);
 
   const handleDelete = (id: string) => {
     setSelectedTask(0);
     setTasks((tasks: TaskType[]) =>
-      tasks.filter((task: TaskType) => task.id !== id)
+      tasks.filter((task: TaskType) => task._id !== id)
     );
   };
 
   const handleSelect = (id: string) => {
-    const index = tasks.findIndex((task: TaskType) => task.id === id);
+    const index = tasks.findIndex((task: TaskType) => task._id === id);
     setSelectedTask(index);
   };
 
@@ -44,7 +40,7 @@ const TaskSection: React.FC<TasksProps> = ({
     if (id === "NEW") {
       setTasks([...tasks, newTask]);
     } else {
-      setTasks(tasks.map((task) => (task.id === id ? newTask : task)));
+      setTasks(tasks.map((task) => (task._id === id ? newTask : task)));
     }
   };
 
@@ -121,7 +117,7 @@ const TaskSection: React.FC<TasksProps> = ({
   };
 
   const getFinishTimeStr = () => {
-    let date = new Date();
+    const date = new Date();
     const time = getFinishTime();
     const hours = Math.floor(time / 60);
     const mins = time % 60;

@@ -23,7 +23,7 @@ const Task: React.FC<TaskProps> = ({
 
   const deleteTask = () => {
     setEdit(false);
-    handleDelete(task.id);
+    handleDelete(task._id);
   };
 
   const cancelTask = () => {
@@ -32,7 +32,7 @@ const Task: React.FC<TaskProps> = ({
 
   const saveTask = (newTask: TaskType) => {
     setEdit(false);
-    handleSave(task.id, newTask);
+    handleSave(task._id, newTask);
   };
 
   return edit ? (
@@ -45,7 +45,7 @@ const Task: React.FC<TaskProps> = ({
   ) : (
     <NavLink
       variant={variant}
-      onClick={() => handleSelect(task.id)}
+      onClick={() => handleSelect(task._id)}
       label={
         <div>
           <Group>

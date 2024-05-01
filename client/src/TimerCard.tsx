@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import Timer from "./Timer.tsx";
 import { Button, Container, Group, Progress, Stack } from "@mantine/core";
 import { TimerEnum } from "./enums.tsx";
-import {SettingsType} from "./types.tsx";
+import { SettingsType } from "./types.tsx";
 
 interface TimerCardProps {
-  settings: SettingsType | null;
+  settings: SettingsType;
   timerType: TimerEnum;
   setTimerType: (val: TimerEnum) => void;
 }
@@ -15,10 +15,6 @@ const TimerCard: React.FC<TimerCardProps> = ({
   timerType,
   setTimerType,
 }) => {
-  if (settings === null) {
-    return "Loading..."
-  }
-
   const [start, setStart] = useState(settings.autoStartPomodoros);
   const [progress, setProgress] = useState(100);
   const [forceRender, setForceRender] = useState(false); // State to force re-render

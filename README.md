@@ -6,6 +6,7 @@ Run development servers:
 - `npm install`
 - `npm run dev`
 In another tab:
+- Based on the `.env-example`, make a `.env` file with valid variables
 - `cd server`
 - `pip install -r requirements.txt`
 - `python .\manage.py runserver`
