@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 
 import router from "./router";
-import { corsMiddleware } from "./helpers";
+import { corsMiddleware } from "./middlewares";
 
 // -- Set environment variables
 dotenv.config();
