@@ -1,6 +1,15 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-const TaskSchema = new mongoose.Schema({
+export interface TaskDocument extends Document {
+  title: string;
+  note: string;
+  projectName: string;
+  done: boolean;
+  numCompleted: number;
+  numToComplete: number;
+}
+
+const TaskSchema = new mongoose.Schema<TaskDocument>({
   title: { type: String, required: true },
   note: { type: String },
   projectName: { type: String },
@@ -9,14 +18,6 @@ const TaskSchema = new mongoose.Schema({
   numToComplete: { type: Number },
 });
 
-const TaskModel = mongoose.model("Task", TaskSchema);
+const TaskModel = mongoose.model<TaskDocument>("Task", TaskSchema);
 
-export const getTaskById = (id: string) => TaskModel.findById(id);
-export const getTaskByIdMany = (ids: string[] | mongoose.Types.ObjectId[]) =>
-  TaskModel.find({ _id: { $in: ids } });
-export const createTask = (values: Record<string, any>) =>
-  new TaskModel(values).save().then((task) => task.toObject());
-export const deleteTaskById = (id: string | mongoose.Types.ObjectId) =>
-  TaskModel.findOneAndDelete({ _id: id });
-export const updateTaskById = (id: string, values: Record<string, any>) =>
-  TaskModel.findByIdAndUpdate(id, values);
+export default TaskModel;

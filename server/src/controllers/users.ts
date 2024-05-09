@@ -1,12 +1,12 @@
 import express from "express";
-import { deleteUserById, getUserById, getUsers } from "../db/users";
+import UserModel from "../db/users";
 
 export const getAllUsers = async (
   req: express.Request,
   res: express.Response
 ) => {
   try {
-    const users = await getUsers();
+    const users = await UserModel.find();
 
     return res.status(200).json(users);
   } catch (error) {
@@ -18,7 +18,7 @@ export const getUser = async (req: express.Request, res: express.Response) => {
   try {
     const { id } = req.params;
 
-    const user = await getUserById(id);
+    const user = await UserModel.findById(id).populate("tasks");
 
     return res.status(200).json(user);
   } catch (error) {
@@ -34,7 +34,7 @@ export const deleteUser = async (
   try {
     const { id } = req.params;
 
-    await deleteUserById(id).then(() =>
+    await UserModel.findByIdAndDelete(id).then(() =>
       res.status(200).json({ success: true })
     );
   } catch (error) {
@@ -54,7 +54,7 @@ export const updateUser = async (
       return res.status(400).json({ error: "Missing request data" });
     }
 
-    const user = await getUserById(id);
+    const user = await UserModel.findById(id);
 
     if (!user) {
       return res.status(400).json({ error: "Invalid user ID" });

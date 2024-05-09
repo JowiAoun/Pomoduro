@@ -1,29 +1,23 @@
 import express from "express";
-import {
-  createTask,
-  deleteTaskById,
-  getTaskById,
-  getTaskByIdMany,
-  updateTaskById,
-} from "../db/tasks";
+import TaskModel from "../db/tasks";
 import { get } from "lodash";
-import { getUserById } from "../db/users";
+import UserModel from "../db/users";
 
 export const getTasks = async (req: express.Request, res: express.Response) => {
   try {
-    const { userId } = req.params;
+    const currentUserId = get(req, "identity._id") as string;
 
-    if (!userId) {
+    if (!currentUserId) {
       return res.status(400).json({ error: "Missing or invalid request data" });
     }
 
-    const user = await getUserById(userId);
+    const user = await UserModel.findById(currentUserId);
 
     if (!user) {
       return res.status(400).json({ error: "Invalid user" });
     }
 
-    const tasks = await getTaskByIdMany(user.tasks);
+    const tasks = await TaskModel.find({ _id: { $in: user.tasks } });
 
     return res.status(200).json(tasks);
   } catch (error) {
@@ -38,16 +32,16 @@ export const addTask = async (req: express.Request, res: express.Response) => {
     const { values } = req.body;
 
     if (!currentUserId || !values) {
-      res.status(400).json({ error: "Missing userID or task values" });
+      return res.status(400).json({ error: "Missing userID or task values" });
     }
 
-    const user = await getUserById(currentUserId);
+    const user = await UserModel.findById(currentUserId);
 
     if (!user) {
-      res.status(400).json({ error: "Invalid user" });
+      return res.status(400).json({ error: "Invalid user" });
     }
 
-    const newTask = await createTask(values);
+    const newTask = await TaskModel.create(values);
 
     user.tasks.push(newTask._id);
     await user.save();
@@ -68,13 +62,13 @@ export const updateTask = async (
     const { values } = req.body;
 
     if (!id || !values) {
-      res.status(400).json({ error: "Missing id or task values" });
+      return res.status(400).json({ error: "Missing id or task values" });
     }
 
-    const updatedTask = await updateTaskById(id, values);
+    const updatedTask = await TaskModel.findByIdAndUpdate(id, values);
 
     if (!updatedTask) {
-      return res.status(404).json({ error: "Could not update task" });
+      return res.status(500).json({ error: "Could not update task" });
     }
 
     return res.status(200).json({ success: true });
@@ -96,8 +90,8 @@ export const deleteTask = async (
       return res.status(400).json({ error: "Invalid cookie" });
     }
 
-    const user = await getUserById(currentUserId);
-    const task = await getTaskById(id);
+    const user = await UserModel.findById(currentUserId);
+    const task = await TaskModel.findById(id);
 
     if (!task) {
       return res.status(404).json({ error: "Task does not exist" });
@@ -110,13 +104,13 @@ export const deleteTask = async (
     }
 
     user.tasks.splice(taskIndex, 1);
-    const deletedTask = await deleteTaskById(task._id);
+    const deletedTask = await TaskModel.findByIdAndDelete(task._id);
 
     if (!deletedTask) {
       return res.status(404).json({ error: "Task does not exist" });
     }
 
-    user.save();
+    await user.save();
 
     return res.status(200).json({ success: true });
   } catch (error) {

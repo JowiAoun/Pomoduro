@@ -1,44 +1,38 @@
-import mongoose from "mongoose";
+import mongoose, { Document, ObjectId } from "mongoose";
 
-const UserSchema = new mongoose.Schema({
+export interface UserDocument extends Document {
+  username: string;
+  email: string;
+  auth: {
+    password: string;
+    salt: string;
+    sessionToken: string;
+  };
+  tasks: ObjectId[];
+  setting: ObjectId;
+  _dateCreated: number;
+}
+
+const UserSchema = new mongoose.Schema<UserDocument>({
   username: { type: String, required: true },
   email: { type: String, required: true },
-  authentication: {
+  auth: {
     password: { type: String, required: true, select: false },
     salt: { type: String, select: false },
     sessionToken: { type: String, select: false },
   },
-  tasks: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Task",
-      default: [],
-    },
-  ],
-  settings: {
-    timerPomodoro: { type: Number, default: 25 },
-    timerShortBreak: { type: Number, default: 5 },
-    timerLongBreak: { type: Number, default: 15 },
-    autoStartBreaks: { type: Boolean, default: false },
-    autoStartPomodoros: { type: Boolean, default: false },
-    longBreakInterval: { type: Number, default: 4 },
+  tasks: { type: [mongoose.Schema.Types.ObjectId], ref: "Task", default: [] },
+  setting: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Setting",
+    default: null,
+  },
+  _dateCreated: {
+    type: Number,
+    default: () => Math.floor(new Date().getTime() / 1000),
   },
 });
 
-const UserModel = mongoose.model("User", UserSchema);
+const UserModel = mongoose.model<UserDocument>("User", UserSchema);
 
-export const getUsers = () => UserModel.find().populate("tasks");
-export const getUserByEmail = (email: string) =>
-  UserModel.findOne({ email }).populate("tasks");
-export const getUserBySessionToken = (sessionToken: string) =>
-  UserModel.findOne({
-    "authentication.sessionToken": sessionToken,
-  }).populate("tasks");
-export const getUserById = (id: string) =>
-  UserModel.findById(id).populate("tasks");
-export const createUser = (values: Record<string, any>) =>
-  new UserModel(values).save().then((user) => user.toObject());
-export const deleteUserById = (id: string) =>
-  UserModel.findOneAndDelete({ _id: id });
-export const updateUserById = (id: string, values: Record<string, any>) =>
-  UserModel.findByIdAndUpdate(id, values);
+export default UserModel;

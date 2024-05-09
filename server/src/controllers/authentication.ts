@@ -1,5 +1,5 @@
 import express from "express";
-import { createUser, getUserByEmail } from "../db/users";
+import UserModel from "../db/users";
 import { authentication, randomSalt } from "../helpers";
 import dotenv from "dotenv";
 
@@ -14,29 +14,26 @@ export const login = async (req: express.Request, res: express.Response) => {
       return res.status(400).json({ error: "Missing request data" });
     }
 
-    const user = await getUserByEmail(email).select(
-      "+authentication.salt +authentication.password"
-    );
+    const user = await UserModel.findOne({ email: email })
+      .select("+auth.salt +auth.password")
+      .populate("tasks");
 
     if (!user) {
       return res.status(400).json({ error: "User not found" });
     }
 
-    const expectedHash = authentication(user.authentication.salt, password);
+    const expectedHash = authentication(user.auth.salt, password);
 
-    if (user.authentication.password !== expectedHash) {
+    if (user.auth.password !== expectedHash) {
       return res.status(403).json({ error: "Password incorrect" });
     }
 
     const salt = randomSalt();
-    user.authentication.sessionToken = authentication(
-      salt,
-      user._id.toString()
-    );
+    user.auth.sessionToken = authentication(salt, user._id.toString());
 
     await user.save();
 
-    res.cookie("POMODURO-AUTH", user.authentication.sessionToken, {
+    res.cookie("POMODURO-AUTH", user.auth.sessionToken, {
       domain: DOMAIN,
       path: "/",
     });
@@ -55,21 +52,25 @@ export const register = async (req: express.Request, res: express.Response) => {
       return res.status(400).json({ error: "Missing request data" });
     }
 
-    const existingUser = await getUserByEmail(email);
+    const existingUser = await UserModel.findOne({ email: email });
 
     if (existingUser) {
       return res.status(400).json({ error: "User with email already exists" });
     }
 
     const salt = randomSalt();
-    const user = await createUser({
+    const user = await UserModel.create({
       username,
       email,
-      authentication: {
+      auth: {
         salt,
         password: authentication(salt, password),
       },
     });
+
+    if (!user) {
+      return res.status(500).json({ error: "User could not be created" });
+    }
 
     return res.status(200).json(user);
   } catch (error) {
