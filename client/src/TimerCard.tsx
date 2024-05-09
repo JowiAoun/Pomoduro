@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Timer from "./Timer.tsx";
 import { Button, Container, Group, Progress, Stack } from "@mantine/core";
-import { TimerEnum } from "./enums.tsx";
-import { SettingsType } from "./types.tsx";
+import { TimerEnum } from "./helpers/enums.ts";
+import { SettingsType } from "./types.ts";
 
 interface TimerCardProps {
   settings: SettingsType;

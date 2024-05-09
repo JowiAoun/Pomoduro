@@ -1,4 +1,4 @@
-import { UserType } from "./types.tsx";
+import { UserType } from "./types.ts";
 
 export const DOMAIN = "localhost";
 export const PORT = 8081;

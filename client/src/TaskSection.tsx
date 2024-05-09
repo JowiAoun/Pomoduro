@@ -11,8 +11,13 @@ import {
 import { IconCirclePlus } from "@tabler/icons-react";
 import TaskMenu from "./TaskMenu";
 import Task from "./Task.tsx";
-import { SettingsType, TaskType } from "./types.tsx";
-import { TimerEnum } from "./enums.tsx";
+import { SettingsType, TaskType } from "./types.ts";
+import { TimerEnum } from "./helpers/enums.ts";
+import {
+  serverCreateTask,
+  serverDeleteTask,
+  serverUpdateTask,
+} from "./helpers/tasks.ts";
 
 interface TasksProps {
   _tasks: TaskType[];
@@ -24,11 +29,16 @@ const TaskSection: React.FC<TasksProps> = ({ _tasks, settings, timerType }) => {
   const [selectedTask, setSelectedTask] = useState(_tasks.length > 0 ? 0 : -1);
   const [tasks, setTasks] = useState(_tasks);
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     setSelectedTask(0);
     setTasks((tasks: TaskType[]) =>
       tasks.filter((task: TaskType) => task._id !== id)
     );
+    const isDeleted = await serverDeleteTask(id);
+
+    if (!isDeleted) {
+      console.log("Could not delete task");
+    }
   };
 
   const handleSelect = (id: string) => {
@@ -36,11 +46,21 @@ const TaskSection: React.FC<TasksProps> = ({ _tasks, settings, timerType }) => {
     setSelectedTask(index);
   };
 
-  const handleSave = (id: string, newTask: TaskType) => {
+  const handleSave = async (id: string, newTask: TaskType) => {
     if (id === "NEW") {
       setTasks([...tasks, newTask]);
+      const createdTask = await serverCreateTask(newTask);
+
+      if (!createdTask) {
+        console.log("Could not create task");
+      }
     } else {
       setTasks(tasks.map((task) => (task._id === id ? newTask : task)));
+      const updatedTask = await serverUpdateTask(id, newTask);
+
+      if (!updatedTask) {
+        console.log("Could not update task");
+      }
     }
   };
 

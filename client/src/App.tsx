@@ -5,10 +5,10 @@ import Header from "./Header.tsx";
 import TimerCard from "./TimerCard.tsx";
 import TaskSection from "./TaskSection.tsx";
 import { useEffect, useState } from "react";
-import { TimerEnum } from "./enums.tsx";
-import { UserType } from "./types.tsx";
+import { TimerEnum } from "./helpers/enums.ts";
+import { UserType } from "./types.ts";
 import { DEFAULT_USER } from "./constants.ts";
-import { fetchUser, login } from "./helpers/users.ts";
+import { login } from "./helpers/users.ts";
 
 function App() {
   const [user, setUser] = useState<UserType>(DEFAULT_USER);
@@ -16,11 +16,14 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    login();
-
     const fetchData = async () => {
       try {
-        const fetchedUser = await fetchUser();
+        const fetchedUser = await login();
+
+        if (!fetchedUser) {
+          //TODO: Logout/Delete cookie & send client to login page
+          console.log("Could not fetch user");
+        }
 
         setUser(fetchedUser);
       } catch (error) {

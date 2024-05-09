@@ -1,5 +1,5 @@
 import React from "react";
-import { TaskType } from "./types";
+import { TaskType } from "./types.ts";
 import {
   Button,
   Container,

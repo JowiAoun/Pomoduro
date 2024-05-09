@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Group, NavLink, Text } from "@mantine/core";
 import { IconCircleCheckFilled, IconDotsVertical } from "@tabler/icons-react";
-import { TaskType } from "./types.tsx";
+import { TaskType } from "./types.ts";
 import TaskEdit from "./TaskEdit.tsx";
 
 interface TaskProps {
