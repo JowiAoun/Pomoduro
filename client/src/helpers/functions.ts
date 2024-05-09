@@ -1,4 +1,4 @@
-export const getUserIdFromCookie = () => {
+export const getSessionTokenFromCookie = () => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; POMODURO-AUTH=`);
 
