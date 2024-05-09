@@ -1,8 +1,7 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { Types } from "mongoose";
 import { get, merge } from "lodash";
-
-import { getUserBySessionToken } from "../db/users";
+import UserModel from "../db/users";
 
 export const isAuthenticated = async (
   req: express.Request,
@@ -16,7 +15,9 @@ export const isAuthenticated = async (
       return res.status(403).json({ error: "User not authenticated" });
     }
 
-    const existingUser = await getUserBySessionToken(sessionToken);
+    const existingUser = await UserModel.findOne({
+      "auth.sessionToken": sessionToken,
+    });
 
     if (!existingUser) {
       return res.status(400).json({ error: "Invalid session token" });
@@ -47,12 +48,38 @@ export const isOwner = async (
     }
 
     if (currentUserId.toString() !== id) {
-      return res.status(404).json({ error: "Access forbidden" });
+      return res.status(403).json({ error: "Access forbidden" });
     }
 
     next();
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const corsMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+
+    if (req.method === "OPTIONS") {
+      res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+      res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Authorization"
+      );
+      res.setHeader("Access-Control-Max-Age", "3600"); // Cache preflight response for 1 hour
+      return res.sendStatus(200);
+    }
+
+    next();
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(500).end;
   }
 };
