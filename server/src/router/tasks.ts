@@ -8,10 +8,9 @@ import {
 } from "../controllers/tasks";
 
 export default (router: express.Router) => {
-  // TODO: Reformat userID and taskID to be less general
-  // TODO: and add isOwner check
-  router.get("/tasks/:userId", isAuthenticated, getTasks);
-  router.post("/tasks/:userId", isAuthenticated, addTask);
+  // TODO: Reformat userID and taskID to be less general and add isOwner check
+  router.post("/tasks", isAuthenticated, addTask);
+  router.get("/tasks", isAuthenticated, getTasks);
   router.patch("/tasks/:id", isAuthenticated, updateTask);
   router.delete("/tasks/:id", isAuthenticated, deleteTask); // TODO: delegate deleteTask owner check to isOwner
 };
