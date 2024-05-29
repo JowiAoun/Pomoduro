@@ -1,65 +1,39 @@
 import React, { useState } from "react";
 import Timer from "./Timer.tsx";
 import { Button, Container, Group, Progress, Stack } from "@mantine/core";
-import { TimerEnum } from "./helpers/enums.ts";
-import { SettingsType } from "./types.ts";
+import { TimerEnum } from "../../../utils/enums.ts";
+import { SettingType } from "../../../utils/types.ts";
+import {
+  getInitialTimer,
+  getVariant,
+  handleStart,
+  timerCallback,
+} from "./handlers.ts";
 
 interface TimerCardProps {
-  settings: SettingsType;
+  setting: SettingType;
   timerType: TimerEnum;
   setTimerType: (val: TimerEnum) => void;
 }
 
 const TimerCard: React.FC<TimerCardProps> = ({
-  settings,
+  setting,
   timerType,
   setTimerType,
 }) => {
-  const [start, setStart] = useState(settings.autoStartPomodoros);
+  const [start, setStart] = useState(setting.autoStartPomodoros);
   const [progress, setProgress] = useState(100);
   const [forceRender, setForceRender] = useState(false); // State to force re-render
-  const audioStart = new Audio("/sounds/timer-click.wav");
-
-  const timerCallback = (time: number) => {
-    console.log("Timer completed:", time, "seconds", "(type:", timerType, ")");
-  };
 
   const handleTimerTypeChange = (type: TimerEnum) => {
     setForceRender(type == timerType && !forceRender);
     setTimerType(type);
     setProgress(100);
     setStart(
-      (settings.autoStartPomodoros && type == TimerEnum.Pomodoro) ||
-        (settings.autoStartBreaks && type == TimerEnum.ShortBreak) ||
-        (settings.autoStartBreaks && type == TimerEnum.LongBreak)
+      (setting.autoStartPomodoros && type == TimerEnum.Pomodoro) ||
+        (setting.autoStartBreaks && type == TimerEnum.ShortBreak) ||
+        (setting.autoStartBreaks && type == TimerEnum.LongBreak)
     );
-  };
-
-  const handleStart = (start: boolean) => () => {
-    audioStart.play();
-    setStart(start);
-  };
-
-  const getInitialTimer = () => {
-    switch (timerType) {
-      case TimerEnum.ShortBreak:
-        return settings.timerShortBreak * 60;
-      case TimerEnum.LongBreak:
-        return settings.timerLongBreak * 60;
-      default:
-        return settings.timerPomodoro * 60;
-    }
-  };
-
-  const getVariant = () => {
-    switch (timerType) {
-      case TimerEnum.ShortBreak:
-        return "timer-control-break-short" + (start ? "-down" : "");
-      case TimerEnum.LongBreak:
-        return "timer-control-break-long" + (start ? "-down" : "");
-      default:
-        return "timer-control-pomodoro" + (start ? "-down" : "");
-    }
   };
 
   return (
@@ -105,30 +79,30 @@ const TimerCard: React.FC<TimerCardProps> = ({
 
             <Timer
               key={timerType + (forceRender ? "-forceRender" : "")}
-              initialTime={getInitialTimer()}
+              initialTime={getInitialTimer(timerType, setting)}
               start={start}
               setStart={setStart}
               setProgress={setProgress}
-              callback={timerCallback}
+              callback={(time: number) => timerCallback(time, timerType)}
             ></Timer>
 
             {start ? (
               <Button
-                variant={getVariant()}
+                variant={getVariant(timerType, start)}
                 size="xl"
                 w="13rem"
                 fw="bold"
-                onClick={handleStart(false)}
+                onClick={handleStart(false, setStart)}
               >
                 PAUSE
               </Button>
             ) : (
               <Button
-                variant={getVariant()}
+                variant={getVariant(timerType, start)}
                 size="xl"
                 w="13rem"
                 fw="bold"
-                onClick={handleStart(true)}
+                onClick={handleStart(true, setStart)}
               >
                 START
               </Button>
