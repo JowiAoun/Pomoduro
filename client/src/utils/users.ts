@@ -1,5 +1,5 @@
-import { UserType } from "../types.ts";
-import { PORT, DOMAIN } from "../constants.ts";
+import { UserType } from "./types.ts";
+import { PORT, DOMAIN } from "./constants.ts";
 
 export async function login(): Promise<UserType> {
   const response = await fetch(`http://${DOMAIN}:${PORT}/auth/login`, {
@@ -7,8 +7,8 @@ export async function login(): Promise<UserType> {
     credentials: "include",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      email: "DaveWhite@example.com",
-      password: "456",
+      email: "JohnDoe@example.com",
+      password: "123",
     }),
   });
 

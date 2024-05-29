@@ -1,19 +1,20 @@
 import { AppShell, Container, MantineProvider, Text } from "@mantine/core";
 import "@mantine/core/styles.css";
 import "../styles/classes.css";
-import Header from "./Header.tsx";
-import TimerCard from "./TimerCard.tsx";
-import TaskSection from "./TaskSection.tsx";
+import Header from "./pages/home/header/Header.tsx";
+import TimerCard from "./pages/home/timer/TimerCard.tsx";
+import TaskSection from "./pages/home/tasks/TaskSection.tsx";
 import { useEffect, useState } from "react";
-import { TimerEnum } from "./helpers/enums.ts";
-import { UserType } from "./types.ts";
-import { DEFAULT_USER } from "./constants.ts";
-import { login } from "./helpers/users.ts";
+import { TimerEnum } from "./utils/enums.ts";
+import { UserType } from "./utils/types.ts";
+import { DEFAULT_USER } from "./utils/constants.ts";
+import { login } from "./utils/users.ts";
+import { getAppVariant } from "./utils/helpers.ts";
 
 function App() {
   const [user, setUser] = useState<UserType>(DEFAULT_USER);
-  const [timerType, setTimerType] = useState(TimerEnum.Pomodoro);
-  const [isLoading, setIsLoading] = useState(true);
+  const [timerType, setTimerType] = useState<TimerEnum>(TimerEnum.Pomodoro);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,17 +37,6 @@ function App() {
     fetchData();
   }, []);
 
-  function getAppVariant() {
-    switch (timerType) {
-      case TimerEnum.ShortBreak:
-        return "timer-control-break-short";
-      case TimerEnum.LongBreak:
-        return "timer-control-break-long";
-      default:
-        return "timer-control-pomodoro";
-    }
-  }
-
   return isLoading ? (
     <MantineProvider>
       <AppShell variant="timer-control-pomodoro">
@@ -57,12 +47,12 @@ function App() {
     </MantineProvider>
   ) : (
     <MantineProvider>
-      <AppShell variant={getAppVariant()}>
+      <AppShell variant={getAppVariant(timerType)}>
         <Header></Header>
 
         <Container>
           <TimerCard
-            settings={user.settings}
+            setting={user.setting}
             timerType={timerType}
             setTimerType={setTimerType}
           ></TimerCard>
@@ -71,7 +61,7 @@ function App() {
         <Container size="xs">
           <TaskSection
             _tasks={user.tasks}
-            settings={user.settings}
+            setting={user.setting}
             timerType={timerType}
           ></TaskSection>
         </Container>

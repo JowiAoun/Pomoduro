@@ -18,7 +18,9 @@ export const getUser = async (req: express.Request, res: express.Response) => {
   try {
     const { id } = req.params;
 
-    const user = await UserModel.findById(id).populate("tasks");
+    const user = await UserModel.findById(id)
+      .populate("tasks")
+      .populate("setting");
 
     return res.status(200).json(user);
   } catch (error) {
