@@ -1,6 +1,6 @@
 import express from "express";
 import TaskModel from "../db/tasks";
-import { forEach, get } from "lodash";
+import { get } from "lodash";
 import UserModel from "../db/users";
 import { ObjectId } from "mongoose";
 
