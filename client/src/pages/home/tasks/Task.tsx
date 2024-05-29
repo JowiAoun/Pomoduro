@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Group, NavLink, Text } from "@mantine/core";
 import { IconCircleCheckFilled, IconDotsVertical } from "@tabler/icons-react";
-import { TaskType } from "./types.ts";
+import { TaskType } from "../../../utils/types.ts";
 import TaskEdit from "./TaskEdit.tsx";
 
 interface TaskProps {
@@ -38,8 +38,9 @@ const Task: React.FC<TaskProps> = ({
   return edit ? (
     <TaskEdit
       task={task}
-      handleDelete={deleteTask}
-      handleCancel={cancelTask}
+      isNewTask={false}
+      handleDelete={() => deleteTask()}
+      handleCancel={() => cancelTask()}
       handleSave={saveTask}
     ></TaskEdit>
   ) : (

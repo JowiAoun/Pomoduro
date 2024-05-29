@@ -1,5 +1,5 @@
 import React from "react";
-import { TaskType } from "./types.ts";
+import { TaskType } from "../../../utils/types.ts";
 import {
   Button,
   Container,
@@ -17,6 +17,7 @@ import {
 
 interface TaskEditProps {
   task: TaskType;
+  isNewTask: boolean;
   handleDelete: () => void;
   handleCancel: () => void;
   handleSave: (newTask: TaskType) => void;
@@ -24,6 +25,7 @@ interface TaskEditProps {
 
 const TaskEdit: React.FC<TaskEditProps> = ({
   task,
+  isNewTask,
   handleDelete,
   handleCancel,
   handleSave,
@@ -77,8 +79,12 @@ const TaskEdit: React.FC<TaskEditProps> = ({
 
       <Container variant="task-edit-bottom">
         <Group>
-          <Button onClick={handleDelete}>Delete</Button>
-          <Button onClick={handleCancel}>Cancel</Button>
+          {isNewTask ? (
+            <></>
+          ) : (
+            <Button onClick={() => handleDelete()}>Delete</Button>
+          )}
+          <Button onClick={() => handleCancel()}>Cancel</Button>
           <Button onClick={() => handleSave(newTask)}>Save</Button>
         </Group>
       </Container>
