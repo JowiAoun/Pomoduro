@@ -5,6 +5,7 @@ import {
   getTasks,
   updateTask,
   deleteTask,
+  deleteTaskAll,
 } from "../controllers/tasks";
 
 export default (router: express.Router) => {
@@ -13,4 +14,5 @@ export default (router: express.Router) => {
   router.get("/tasks", isAuthenticated, getTasks);
   router.patch("/tasks/:id", isAuthenticated, updateTask);
   router.delete("/tasks/:id", isAuthenticated, deleteTask); // TODO: delegate deleteTask owner check to isOwner
+  router.delete("/tasks", isAuthenticated, deleteTaskAll); // TODO: delegate deleteTaskAll owner check to isOwner
 };

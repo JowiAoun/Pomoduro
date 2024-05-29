@@ -10,7 +10,7 @@ export type TaskType = {
   created: string;
 };
 
-export type SettingsType = {
+export type SettingType = {
   timerPomodoro: number;
   timerShortBreak: number;
   timerLongBreak: number;
@@ -24,5 +24,5 @@ export type UserType = {
   username: string;
   email: string;
   tasks: TaskType[];
-  settings: SettingsType;
+  setting: SettingType;
 };

@@ -1,7 +1,8 @@
 import express from "express";
 import TaskModel from "../db/tasks";
-import { get } from "lodash";
+import { forEach, get } from "lodash";
 import UserModel from "../db/users";
+import { ObjectId } from "mongoose";
 
 export const getTasks = async (req: express.Request, res: express.Response) => {
   try {
@@ -41,12 +42,16 @@ export const addTask = async (req: express.Request, res: express.Response) => {
       return res.status(400).json({ error: "Invalid user" });
     }
 
+    if (values._id) {
+      delete values._id;
+    }
+
     const newTask = await TaskModel.create(values);
 
     user.tasks.push(newTask._id);
     await user.save();
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json(newTask);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal server error" });
@@ -71,7 +76,7 @@ export const updateTask = async (
       return res.status(500).json({ error: "Could not update task" });
     }
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json(updatedTask);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal server error" });
@@ -109,6 +114,40 @@ export const deleteTask = async (
     if (!deletedTask) {
       return res.status(404).json({ error: "Task does not exist" });
     }
+
+    await user.save();
+
+    return res.status(200).json(deletedTask);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const deleteTaskAll = async (
+  req: express.Request,
+  res: express.Response
+) => {
+  try {
+    const currentUserId = get(req, "identity._id") as string;
+
+    if (!currentUserId) {
+      return res.status(400).json({ error: "Invalid cookie" });
+    }
+
+    const user = await UserModel.findById(currentUserId);
+
+    if (!user) {
+      return res.status(404).json({ error: "User does not exist" });
+    }
+
+    const deletionPromises = user.tasks.map(async (taskId: ObjectId) => {
+      await TaskModel.findByIdAndDelete(taskId);
+    });
+
+    user.tasks = [];
+
+    await Promise.all(deletionPromises);
 
     await user.save();
 
