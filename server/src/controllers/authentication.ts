@@ -16,7 +16,8 @@ export const login = async (req: express.Request, res: express.Response) => {
 
     const user = await UserModel.findOne({ email: email })
       .select("+auth.salt +auth.password")
-      .populate("tasks");
+      .populate("tasks")
+      .populate("setting");
 
     if (!user) {
       return res.status(400).json({ error: "User not found" });
