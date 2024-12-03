@@ -8,10 +8,10 @@ Here is the work-in-progress infrastructure design using AWS.
 
 Run development servers:
 - `cd client`
-- `npm install`
+- `npm i`
 - `npm run dev`
 In another tab:
 - Based on the `.env-example`, make a `.env` file with valid variables
 - `cd server`
-- `pip install -r requirements.txt`
-- `python .\manage.py runserver`
+- `npm i`
+- `npm start`
