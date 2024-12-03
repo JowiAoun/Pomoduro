@@ -1,6 +1,6 @@
 import { AppShell, Container, MantineProvider, Text } from "@mantine/core";
 import "@mantine/core/styles.css";
-import "../styles/classes.css";
+import "../styles/classes.scss";
 import Header from "./pages/home/header/Header.tsx";
 import TimerCard from "./pages/home/timer/TimerCard.tsx";
 import TaskSection from "./pages/home/tasks/TaskSection.tsx";
