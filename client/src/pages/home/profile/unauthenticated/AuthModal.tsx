@@ -19,7 +19,7 @@ const AuthModal: React.FC<AuthModalProps> = () => {
         <IconLogin2
           style={{ marginLeft: "0.5rem", marginRight: "0.5rem" }}
         ></IconLogin2>
-        <Text variant="header-button">Login</Text>
+        <Text variant="header-button">Sign-In</Text>
       </Button>
     </>
   );
